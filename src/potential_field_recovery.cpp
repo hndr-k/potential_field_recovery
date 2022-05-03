@@ -31,9 +31,9 @@ namespace potential_field_recovery {
     void PotentialFieldRecovery::onConfigure() {
 
 
-                    if (!initialized_) {
-                        auto node = node_;
-                        if (!node_) {
+                   
+                        auto node = node_.lock();
+                        if (!node) {
                             throw std::runtime_error{"Failed to retrieve node"};
                         }
                         std::shared_ptr<tf2_ros::Buffer> tf = this->tf_;
@@ -54,7 +54,7 @@ namespace potential_field_recovery {
                         
 
                         nav2_util::declare_parameter_if_not_declared(
-                            node_,
+                            node,
                             "sim_granularity", rclcpp::ParameterValue(0.017));
                         node->get_parameter("sim_granularity", sim_granularity_);
 
@@ -84,7 +84,7 @@ namespace potential_field_recovery {
                             "tolerance", rclcpp::ParameterValue(0.05));
                         node->get_parameter("tolerance", tolerance_);
 
-                        RCLCPP_INFO(node_->get_logger(),"The recovery plugin has been initialized.");
+                        RCLCPP_INFO(node->get_logger(),"The recovery plugin has been initialized.");
                       
                                      
 
@@ -92,14 +92,8 @@ namespace potential_field_recovery {
 
 
                     }
-                    else
-                    {
-                        RCLCPP_ERROR(node_->get_logger(), "Can not init the recovery plugin.");
 
-                    }
-
-                }
-        Status PotentialFieldRecovery::onRun(const std::shared_ptr<const Action::Goal> command)
+Status PotentialFieldRecovery::onRun(const std::shared_ptr<const Action::Goal> command)
 {
 
     //auto node = node_.lock();
@@ -114,7 +108,7 @@ namespace potential_field_recovery {
       current_pose, *tf_, global_frame_, robot_base_frame_,
       transform_tolerance_))
     {
-    RCLCPP_ERROR(node_->get_logger(), "Current robot pose is not available.");
+    RCLCPP_ERROR(logger_, "Current robot pose is not available.");
     return Status::FAILED;
     }
     
@@ -134,7 +128,7 @@ namespace potential_field_recovery {
                 current_pose, *tf_, global_frame_, robot_base_frame_,
                 transform_tolerance_))
         {
-                RCLCPP_INFO(node_->get_logger(), "Current robot pose is not available.");
+                RCLCPP_INFO(logger_, "Current robot pose is not available.");
         }
     
         double robot_x = current_pose.pose.position.x;
