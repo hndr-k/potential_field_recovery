@@ -33,7 +33,7 @@
 
   <export>
     <build_type>ament_cmake</build_type>
-    <nav2_core plugin="${prefix}/potential_field_plugin.xml" />
+    <nav2_core plugin="${prefix}recovery_plugin.xml" />
   </export>
 </package>
 

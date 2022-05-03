@@ -1,4 +1,3 @@
-
 <library path="potential_field_recovery">
   <class name="potential_field_recovery/PotentialFieldRecovery" type="potential_field_recovery::PotentialFieldRecovery" base_class_type="nav2_core::Recovery">
     <description>A behavior to recover the omni-directional Robotino, when it is stuck.</description>

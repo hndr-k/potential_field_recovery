@@ -78,9 +78,6 @@ Status PotentialFieldRecovery::onRun(
 
   geometry_msgs::msg::PoseStamped current_pose;
 
-  double current_angle = -1.0 * M_PI;
-  bool got_180 = false;
-
   // using the utils of the navigation2 framework to grab the current robot pose
   if (!nav2_util::getCurrentPose(current_pose, *tf_, global_frame_,
                                  robot_base_frame_, transform_tolerance_)) {
@@ -94,9 +91,7 @@ Status PotentialFieldRecovery::onRun(
 
   double start_offset = 0 - angles::normalize_angle(theta);
 
-  int id = 0;
 
-  while (rclcpp::ok()) {
     if (!nav2_util::getCurrentPose(current_pose, *tf_, global_frame_,
                                    robot_base_frame_, transform_tolerance_)) {
       RCLCPP_INFO(logger_, "Current robot pose is not available.");
@@ -158,12 +153,8 @@ Status PotentialFieldRecovery::onRun(
 
     // TO-DO publish visualization and clear the vis-points
 
-    if (cur_min_dist >= min_dist_) {
-      break;
-    }
 
-    target_phi =
-        angles::normalize_angle(atan2(target_y, target_x) - robot_orientation);
+    target_phi = angles::normalize_angle(atan2(target_y, target_x) - robot_orientation);
 
     float drive_part_x = 0.0;
     float drive_part_y = 0.0;
@@ -181,7 +172,7 @@ Status PotentialFieldRecovery::onRun(
     cmd_vel.linear.y = drive_part_y * max_trans_vel_;
 
     vel_pub_->publish(cmd_vel);
-  }
+  
 
   return Status::SUCCEEDED;
 }
