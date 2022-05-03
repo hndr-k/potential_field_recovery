@@ -16,6 +16,7 @@
 #include <memory>
 
 #include "potential_field_recovery/action/potentialfield.hpp"
+#include "potential_field_action.hpp"
 
 namespace nav2_behavior_tree
 {
@@ -24,7 +25,7 @@ PotentialFieldAction::PotentialFieldAction(
   const std::string & xml_tag_name,
   const std::string & action_name,
   const BT::NodeConfiguration & conf)
-: BtActionNode<nav2_msgs::action::BackUp>(xml_tag_name, action_name, conf)
+: BtActionNode<potential_field_recovery::action::Potentialfield>(xml_tag_name, action_name, conf)
 {
 
   double dist;

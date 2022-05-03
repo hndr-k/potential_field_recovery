@@ -65,6 +65,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 
 add_library(${library_name} SHARED
   src/potential_field_recovery.cpp
+  src/potential_field_action.cpp
 )
 
 target_compile_definitions(${library_name} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
